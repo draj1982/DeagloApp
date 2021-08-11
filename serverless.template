@@ -1,0 +1,164 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "An AWS Serverless Application.",
+  "Parameters":{
+    "Stage":{
+        "Type" : "String",
+        "Description" : "API Stage"
+    }
+  },
+  "Resources": {
+    "Get": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "DeagloApp::DeagloApp.Functions::Get",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": { "Fn::Sub" : "arn:aws:iam::${AWS::AccountId}:role/lambda-role" },
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/",
+              "Method": "GET"
+            }
+          }
+        }
+      }
+    },
+   "GetTime": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "DeagloApp::DeagloApp.Functions::GetTime",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": { "Fn::Sub" : "arn:aws:iam::${AWS::AccountId}:role/lambda-role" },
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/api/time",
+              "Method": "GET"
+            }
+          }
+        }
+      }
+    },
+   "SelectDeatilsFromLambda":{
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "DeagloApp::DeagloApp.Functions::SelectDeatilsFromLambda",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": { "Fn::Sub" : "arn:aws:iam::${AWS::AccountId}:role/lambda-role" },
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/api/selectAll",
+              "Method": "GET"
+            }
+          }
+        }
+      }
+    },
+   "FinalSelection":{
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "DeagloApp::DeagloApp.Functions::FinalSelection",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": { "Fn::Sub" : "arn:aws:iam::${AWS::AccountId}:role/lambda-role" },
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/api/Final",
+              "Method": "GET"
+            }
+          }
+        }
+      }
+    },
+    "SelectResponse":{
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "DeagloApp::DeagloApp.Functions::SelectResponse",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": { "Fn::Sub" : "arn:aws:iam::${AWS::AccountId}:role/lambda-role" },
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/api/SelectResponse",
+              "Method": "GET"
+            }
+          }
+        }
+      }
+    },
+     "CallLambdaPython":{
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "DeagloApp::DeagloApp.Functions::CallLambdaPython",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": { "Fn::Sub" : "arn:aws:iam::${AWS::AccountId}:role/lambda-role" },
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Environment":{
+         "Variables" : {
+           "Stage" : {"Ref":"Stage"}
+           }
+         },
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/api/CallLambdaPython",
+              "Method": "GET"
+            }
+          }
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ApiURL": {
+      "Description": "API endpoint URL for Prod environment",
+      "Value": {
+        "Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+      }
+    }
+  }
+}
